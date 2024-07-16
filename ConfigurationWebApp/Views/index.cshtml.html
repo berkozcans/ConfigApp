@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configurations</title>
+</head>
+<body>
+<h1>Configurations</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Value</th>
+        <th>IsActive</th>
+        <th>ApplicationName</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var config in Model)
+    {
+    <tr>
+        <td>@config.ID</td>
+        <td>@config.Name</td>
+        <td>@config.Type</td>
+        <td>@config.Value</td>
+        <td>@config.IsActive</td>
+        <td>@config.ApplicationName</td>
+    </tr>
+    }
+    </tbody>
+</table>
+</body>
+</html>
+

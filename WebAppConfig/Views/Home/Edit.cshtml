@@ -1,0 +1,45 @@
+<!-- Views/Home/Edit.cshtml -->
+
+@model ConfigurationLibrary.Configuration
+
+<h1>Edit Configuration</h1>
+@Model._id
+<form asp-action="Edit">
+    <input type="hidden" asp-for="_id" name="_id" /> <!-- _id değerini saklamak için hidden input -->
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Type" class="control-label"></label>
+        <input asp-for="Type" class="form-control" />
+        <span asp-validation-for="Type" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Value" class="control-label"></label>
+        <input asp-for="Value" class="form-control" />
+        <span asp-validation-for="Value" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <div class="form-check">
+            <input asp-for="IsActive" class="form-check-input" />
+            <label class="form-check-label" asp-for="IsActive">Is Active</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ApplicationName" class="control-label"></label>
+        <input asp-for="ApplicationName" class="form-control" />
+        <span asp-validation-for="ApplicationName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
