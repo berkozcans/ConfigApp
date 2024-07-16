@@ -1,0 +1,69 @@
+﻿<!-- Views/Home/Index.cshtml -->
+
+@model List<ConfigurationLibrary.Configuration>
+
+<head>
+    <title>Configuration Table</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
+</head>
+<h2>Configuration Table</h2>
+
+<input type="text" id="filterInput" onkeyup="filterTable()" placeholder="Filter by Name..">
+
+<table id="configTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>IsActive</th>
+            <th>ApplicationName</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Type</td>
+                <td>@item.Value</td>
+                <td>@item.IsActive</td>
+                <td>@item.ApplicationName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item._id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+   function filterTable() {
+           var input, filter, table, tr, td, i, txtValue;
+           input = document.getElementById("filterInput");
+           console.log('input',input)
+           filter = input.value.toUpperCase();
+           console.log('filter',filter)
+           table = document.getElementById("configTable");
+           console.log('table',table)
+           tr = table.getElementsByTagName("tr");
+   
+           for (i = 0; i < tr.length; i++) {
+               td = tr[i].getElementsByTagName("td")[0];
+               if (td) {
+                   txtValue = td.textContent || td.innerText;
+                   if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                       tr[i].style.display = "";
+                   } else {
+                       tr[i].style.display = "none";
+                   }
+               }
+           }
+       }
+</script>

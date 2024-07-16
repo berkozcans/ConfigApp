@@ -1,0 +1,8 @@
+﻿version: '3.4'
+
+services:
+  orderapi:
+    image: ${DOCKER_REGISTRY-}configuration
+    build:
+      context: .
+      dockerfile: ConfigurationLibrary/Dockerfile
