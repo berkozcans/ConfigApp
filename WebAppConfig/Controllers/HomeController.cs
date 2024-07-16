@@ -13,25 +13,21 @@ public class HomeController : Controller
     private readonly IMongoDatabase _database;
     private readonly IMongoCollection<Configuration> _configurations;
 
-    public HomeController(ILogger<HomeController> logger, IMongoClient mongoClient)
+    public HomeController(IMongoClient mongoClient)
     {
         _database = mongoClient.GetDatabase("ConfigurationDb");
         _configurations = _database.GetCollection<Configuration>("Configurations");
-        _logger = logger;
     }
 
     public IActionResult Index()
     {
-        var client = new MongoClient("mongodb://localhost:27017");
-        var database = client.GetDatabase("ConfigurationDb");
-        var collection = database.GetCollection<Configuration>("Configurations");
         var filter = Builders<Configuration>.Filter.And(
             Builders<Configuration>.Filter.Eq(c => c.ApplicationName, "SERVICE-A"),
             Builders<Configuration>.Filter.Eq(c => c.IsActive, true)
         );
         
-        var data = collection.Find(filter).ToList();
-        if (data == null || data.Count == 0)
+        var data = _configurations.Find(filter).ToList();
+        if (data == null)
         {
             // Veri bulunamadı, bir hata mesajı veya varsayılan bir değer gönderilebilir.
             ViewBag.ErrorMessage = "Konfigürasyon verisi bulunamadı.";
@@ -56,12 +52,11 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create(Configuration configuration)
+    public async Task<IActionResult> Create(Configuration configuration)
     {
         if (ModelState.IsValid)
         {
-            _configurations.InsertOne(configuration);
-            return RedirectToAction("Index");
+            await _configurations.InsertOneAsync(configuration);
         }
         foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
         {

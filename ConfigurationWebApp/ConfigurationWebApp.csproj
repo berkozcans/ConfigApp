@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ConfigurationConsoleApp\ConfigurationConsoleApp.csproj" />
-      <ProjectReference Include="..\ConfigurationLibrary\ConfigurationLibrary.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,6 +35,12 @@
 
     <ItemGroup>
       <Folder Include="Pages\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="ConfigurationLibrary">
+        <HintPath>..\ConfigurationLibrary\bin\Debug\net6.0\ConfigurationLibrary.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
