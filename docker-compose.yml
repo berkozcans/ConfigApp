@@ -1,8 +1,17 @@
-﻿version: '3.4'
+version: '3.4'
 
 services:
-  orderapi:
-    image: ${DOCKER_REGISTRY-}configuration
-    build:
-      context: .
-      dockerfile: ConfigurationLibrary/Dockerfile
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+    command: [ "mongod", "--port", "27017" ]
+
+
+
+
+volumes:
+  mongo-data:
