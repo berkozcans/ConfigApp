@@ -4,7 +4,7 @@ namespace ConfigurationLibrary;
 
 public class ConfigReader
 {
-      private readonly string _applicationName;
+        private readonly string _applicationName;
         private readonly IMongoCollection<Configuration> _collection;
         private Dictionary<string, Configuration> _configurations;
         private Dictionary<string, Configuration> _configurationCache;
@@ -42,7 +42,8 @@ public class ConfigReader
                 if (_configurations.TryGetValue(key, out var config) && config.IsActive)
                 {
                     _configurationCache[key] = config;
-                    return (T)Convert.ChangeType(config.Value, typeof(T));
+
+                    return (T)ChangeType(config.Value, typeof(T));
                 }
                 throw new KeyNotFoundException($"Key '{key}' not found or inactive.");
             }
@@ -50,9 +51,33 @@ public class ConfigReader
             {
                 if (_configurationCache.TryGetValue(key, out var cachedConfig))
                 {
-                    return (T)Convert.ChangeType(cachedConfig.Value, typeof(T));
+                    return (T)ChangeType(cachedConfig.Value, typeof(T));
                 }
                 throw new KeyNotFoundException($"Key '{key}' not found in cache.");
             }
+        }
+
+        private object ChangeType(object value, Type conversionType)
+        {
+            if (conversionType.IsGenericType && conversionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                if (value == null)
+                {
+                    return null;
+                }
+
+                conversionType = Nullable.GetUnderlyingType(conversionType);
+            }
+
+            if (conversionType.IsEnum)
+            {
+                return Enum.Parse(conversionType, value.ToString());
+            }
+
+            return Convert.ChangeType(value, conversionType);
+        }
+        public IEnumerable<Configuration> GetAllConfigurations()
+        {
+            return _configurations.Values;
         }
 }
