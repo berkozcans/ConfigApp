@@ -10,8 +10,10 @@ builder.Services.AddControllersWithViews();
 // MongoDB Configuration
 builder.Services.AddScoped<IMongoClient>(serviceProvider =>
 {
-    var mongoUrl = new MongoUrl("mongodb://localhost:27018");
-    return new MongoClient(mongoUrl);
+    var connectionString = builder.Configuration.GetConnectionString("MongoDb");
+    var mongoClient = new MongoClient(connectionString);
+    Console.WriteLine(connectionString);
+    return mongoClient;
 });
 
 var app = builder.Build();
@@ -24,10 +26,9 @@ if (!app.Environment.IsDevelopment())
     //app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -8,10 +8,24 @@ services:
       - "27018:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - app-network
     command: [ "mongod", "--port", "27017" ]
 
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    networks:
+      - app-network
 
-
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   mongo-data:
