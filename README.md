@@ -1,2 +1,0 @@
-# ConfigurationWebApp
-Configuration Web App
