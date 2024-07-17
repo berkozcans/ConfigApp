@@ -2,5 +2,6 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d139e52c_002D0933_002D423e_002Db9bf_002D44ed4ada5d65/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Create_ShouldInsertConfiguration" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::A311DC71-3672-486F-8248-256D710F5B77::net6.0::Tests.Tests.Create_ShouldInsertConfiguration&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::A311DC71-3672-486F-8248-256D710F5B77::net6.0::Tests.Tests.GetConfigurations_ReturnsLastKnownConfigurations_WhenDatabaseFails&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

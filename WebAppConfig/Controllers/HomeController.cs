@@ -12,14 +12,20 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly IMongoDatabase _database;
     private readonly IMongoCollection<Configuration> _configurations;
+    private readonly List<Configuration> _lastKnownConfigurations;
 
     public HomeController(IMongoClient mongoClient)
     {
         _database = mongoClient.GetDatabase("ConfigurationDb");
-        _configurations = _database.GetCollection<Configuration>("Configurations");
+        _configurations = _database.GetCollection<Configuration>("Configurations");       
+        _lastKnownConfigurations = new List<Configuration>
+        {
+            new Configuration { Name = "Default1" },
+            new Configuration { Name = "Default2" }
+        };
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var filter = Builders<Configuration>.Filter.And(
             Builders<Configuration>.Filter.Eq(c => c.ApplicationName, "SERVICE-A"),
@@ -29,7 +35,6 @@ public class HomeController : Controller
         var data = _configurations.Find(filter).ToList();
         if (data == null)
         {
-            // Veri bulunamadı, bir hata mesajı veya varsayılan bir değer gönderilebilir.
             ViewBag.ErrorMessage = "Konfigürasyon verisi bulunamadı.";
         }
         return View(data);
@@ -64,6 +69,18 @@ public class HomeController : Controller
         }
 
         return View(configuration);
+    }    
+    public List<Configuration> GetConfigurations()
+    {
+        try
+        {
+            return _configurations.FindSync(Builders<Configuration>.Filter.Empty).ToList();
+
+        }
+        catch (Exception)
+        {
+            return _lastKnownConfigurations;
+        }
     }
     public IActionResult Edit(string id)
     {
@@ -80,7 +97,7 @@ public class HomeController : Controller
 
     [HttpPost]
     public IActionResult Edit(string id, Configuration updatedConfiguration)
-    {
+         {
         var objectId = new ObjectId(id); // id stringini ObjectId türüne dönüştür
 
         if (objectId != updatedConfiguration._id)

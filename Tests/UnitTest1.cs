@@ -61,4 +61,26 @@ public class Tests
         Assert.AreEqual(config, result.Model); 
 
     }
+    [Test]
+    public async Task GetConfigurations_ReturnsLastKnownConfigurations_WhenDatabaseFails()
+    {
+        // Arrange
+        var mockCursor = new Mock<IAsyncCursor<Configuration>>();
+        mockCursor.Setup(c => c.Current).Returns(new List<Configuration>().AsReadOnly());
+        mockCursor
+            .SetupSequence(c => c.MoveNext(It.IsAny<CancellationToken>()))
+            .Returns(false);
+
+        _mockCollection
+            .Setup(c => c.FindSync(It.IsAny<FilterDefinition<Configuration>>(), It.IsAny<FindOptions<Configuration, Configuration>>(), default))
+            .Throws(new Exception("Database connection failed"));
+
+        // Act
+        var result =  _controller.GetConfigurations();
+
+        // Assert
+        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual("Default1", result[0].Name);
+        Assert.AreEqual("Default2", result[1].Name);
+    }
 }
