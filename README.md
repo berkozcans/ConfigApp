@@ -11,7 +11,7 @@ enabling accessible management of application keys through a unified and dynamic
 
 In the WebAppConfig directory
     -> sudo docker-compose up --build to create our images and containers
-    -> http://localhost:8080/ you can stand up on port 80808 on your local.
+    -> http://localhost:8080/ you can stand up on port 8080 on your local.
 
 WebAppConfig dizininde
     ->   sudo docker-compose up --build komutuyla imaj ve containerlarımızı oluşturalımç
